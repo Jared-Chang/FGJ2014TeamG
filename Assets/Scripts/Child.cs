@@ -4,30 +4,34 @@ using System.Collections;
 public class Child : MonoBehaviour {
 
 	public GameObject leftPoint, rightPoint;
-	private bool turn;
+	public float speed;
+	private bool left;
 	private Vector3 v;
+
 	// Use this for initialization
 	void Start () {
-	
+		left = Random.Range(0,2) == 1 ? left : !left;
+		speed = Random.Range(1.0f, 3.0f);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		GameObject target;
-		if(turn)
+		if(left)
 		{
-			target = leftPoint;
-			transform.position = Vector3.SmoothDamp(transform.position, target.transform.position, ref v, 2.0f * Time.deltaTime, 3.0f);
-			if(Vector3.Distance(transform.position, target.transform.position) < 0.1f)
-				turn = !turn;
+			transform.position = Vector3.SmoothDamp(transform.position, new Vector3(leftPoint.transform.position.x, transform.position.y, transform.position.z), ref v, speed * Time.deltaTime, speed/2);
+			if(Mathf.Abs (transform.position.x - leftPoint.transform.position.x) < 0.1f)
+				left = !left;
 		}
 		else
 		{
-			target = rightPoint;
-			transform.position = Vector3.SmoothDamp(transform.position, target.transform.position, ref v, 2.0f * Time.deltaTime, 3.0f);
-			if(Vector3.Distance(transform.position, target.transform.position) < 0.1f)
-				turn = !turn;
+			transform.position = Vector3.SmoothDamp(transform.position, new Vector3(rightPoint.transform.position.x, transform.position.y, transform.position.z), ref v, speed * Time.deltaTime, speed/2);
+			if(Mathf.Abs (transform.position.x - rightPoint.transform.position.x) < 0.1f)
+				left = !left;
 		}
 
+
+
 	}
+
+
 }

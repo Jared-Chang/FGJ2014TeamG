@@ -1,27 +1,45 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class EnemyCreater : MonoBehaviour {
+	
+	//public int level;
+	public GameObject[] respawnPoints;
+	public ParticleSystem deathPuff;
+	public int count;
 
-	public GameObject enemy;
-
-	// Use this for initialization
 	void Start () {
 	
 	}
-
-	private float time = 1.0f;
-	private int count = 10;
-	// Update is called once per frame
+	
 	void Update () {
-		time -= Time.deltaTime;
-		if(time < 0)
+
+	}
+
+	public void StartEnemyWave(GameObject enemy, int amount, int level)
+	{
+		StartCoroutine(Create(enemy, amount, level));
+	}
+
+	private IEnumerator Create(GameObject enemy, int amount, int level)
+	{
+		int count = amount;
+		while(count > 0)
 		{
-			time = Random.Range(1,3);
+			yield return new WaitForSeconds(Random.Range(1.0f,2.5f));
+
+			//Time's up, create enemy
+			GameObject obj = (GameObject)Instantiate(enemy);
+			Enemy enemyScript = obj.GetComponent(typeof(Enemy)) as Enemy;
+			enemyScript.fx = deathPuff;
+			enemyScript.creater = this;
 			count--;
 
-			GameObject obj = (GameObject)Instantiate(enemy);
-			obj.transform.position = this.transform.position + new Vector3(30, 0, 0);
+			//Create enemy at random respawn point
+			GameObject target = respawnPoints[level];
+			obj.transform.position = target.transform.position;
 		}
+		//Create finished
 	}
 }

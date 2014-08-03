@@ -3,18 +3,30 @@ using System.Collections;
 
 public class Enemy : MonoBehaviour {
 
-	// Use this for initialization
+	public float speed;
+	public float hp;
+	public ParticleSystem fx;
+	public EnemyCreater creater;
+
 	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		transform.position = Vector3.MoveTowards(transform.position, this.transform.position + Vector3.left, 2.0f * Time.deltaTime);
+
 	}
 
-	void OnMouseDown()
+	void Update ()  {
+		transform.position = Vector3.MoveTowards(transform.position, this.transform.position + Vector3.right, speed * 0.2f * Time.deltaTime);
+	}
+
+	public void Damage(float damage)
 	{
-		Destroy(this.gameObject);
+		hp -= damage;
+		if(hp < 0)
+		{
+			fx.Stop();
+			fx.transform.position = this.transform.position;
+			fx.Play();
+
+			creater.count--;
+			Destroy(this.gameObject);
+		}
 	}
 }
