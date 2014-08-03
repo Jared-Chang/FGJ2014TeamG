@@ -117,7 +117,7 @@ public class Tower : MonoBehaviour {
 				if(mCollers[k].tag == "Enemies")
 				{
 					distance[k] = Vector3.Distance(archerPrefab[i].transform.position, mCollers[k].transform.position);
-					Debug.Log("OverlapCircleAll Collers[" + mCollers[k].name + "] distance: " + distance[k].ToString());
+					//Debug.Log("OverlapCircleAll Collers[" + mCollers[k].name + "] distance: " + distance[k].ToString());
 					if(k == 0)
 					{
 						miniDistance = distance[k];
@@ -149,6 +149,7 @@ public class Tower : MonoBehaviour {
 			}
 			else
 			{
+				Destroy (newBullt);
 				//mBullt.targertPosition = new Vector3(shootPoint[i].transform.position.x -1000, shootPoint[i].transform.position.y, shootPoint[i].transform.position.z);
 			}
 

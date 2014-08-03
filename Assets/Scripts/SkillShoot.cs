@@ -12,6 +12,9 @@ public class SkillShoot : MonoBehaviour {
 	private const float thoushold = 0.1f;
 	private bool isSlay = false;
 	private bool isFire = false;
+	public GameObject firePart;
+	public GameObject thunderPart;
+	public GameObject slayPart;
 
 	// Use this for initialization
 	void Start () {
@@ -31,10 +34,7 @@ public class SkillShoot : MonoBehaviour {
 		}
 		else
 		{
-			StartCoroutine("Bomp");
-			if( isFire )
-				AttackColculate();//StartCoroutine("AttackColculate");
-			Destroy (gameObject);
+			AttackColculate();
 		}
 
 	}
@@ -53,8 +53,6 @@ public class SkillShoot : MonoBehaviour {
 	{
 		if( collider.tag == "Enemies" && !isFire )
 		{
-			//StartCoroutine("Bomp");
-			//StartCoroutine("AttackColculate");
 			AttackColculate();
 		}
 	}
@@ -65,6 +63,9 @@ public class SkillShoot : MonoBehaviour {
 		float minDis = 100, tempDis;
 		Collider2D minEnemy = null;
 		//
+		if( isFire ) Instantiate(firePart, transform.position, Quaternion.identity);
+		else if ( isSlay ) Instantiate(slayPart, transform.position, Quaternion.identity);
+		else Instantiate(thunderPart, transform.position, Quaternion.identity);
 
 		Collider2D[] allEnemy = Physics2D.OverlapCircleAll( transform.position, radius );
 		foreach( Collider2D _collider in allEnemy )
@@ -73,7 +74,7 @@ public class SkillShoot : MonoBehaviour {
 			{
 				_collider.gameObject.GetComponent<Enemy>().Damage(attack);
 			}
-			else if( isSlay ) //for slay determine
+			else if( isSlay && _collider.tag == "Enemies" ) //for slay determine
 			{
 				tempDis = Vector2.Distance( transform.position, _collider.transform.position );
 				if( tempDis < minDis )
@@ -83,18 +84,7 @@ public class SkillShoot : MonoBehaviour {
 				}
 			}
 		}
-		if( isSlay ) minEnemy.gameObject.GetComponent<Enemy>().Damage(attack);
-
+		if( minEnemy != null ) minEnemy.gameObject.GetComponent<Enemy>().Damage(attack);
 		Destroy(gameObject);
-	}
-	
-	IEnumerator Bomp()
-	{
-		for(;;)
-		{
-
-
-			yield return null;
-		}
 	}
 }

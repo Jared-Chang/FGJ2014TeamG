@@ -44,13 +44,40 @@ public class GameManager : MonoBehaviour {
 		StartCoroutine("InitLogo");
 	}
 
+	public Skill skill;
+	private int skillIndex;
 	void Update () {
 		if(stat == Stat.GAME)
 		{
 			if(Input.GetMouseButtonDown(0))
 			{
 				Vector2 target = Camera.main.ScreenToWorldPoint(new Vector3(Input.mousePosition.x, Input.mousePosition.y, 10));
-				SendMessage("Thunder", target);
+				//SendMessage("Thunder", target);
+				switch(skillIndex)
+				{
+				case 0:
+					skill.Thunder(target);
+					break;
+				case 1:
+					skill.Fire(target);
+					break;
+				case 2:
+					skill.Slay(target);
+					break;
+				}
+			}
+
+			if(Input.GetKeyDown(KeyCode.W))
+			{
+				skillIndex = 0;
+			}
+			if(Input.GetKeyDown(KeyCode.E))
+			{
+				skillIndex = 1;
+			}
+			if(Input.GetKeyDown(KeyCode.R))
+			{
+				skillIndex = 2;
 			}
 		}
 		if(Input.GetKeyDown(KeyCode.Space))
