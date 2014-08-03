@@ -8,10 +8,19 @@ public class Bullt : MonoBehaviour {
 	public Vector3 archerPosition;
 	public float speed;
 	Vector3 way;
+	public float deathTime = 30f;
+	float time = 0f;
+	public SpriteRenderer mSpriteRenderer;
 
 	// Update is called once per frame
 	void Update () 
 	{
+		//auto shoot
+		time += Time.deltaTime;
+		if (time > deathTime) {
+			Destroy(gameObject);
+		}
+
 		if (intiReady)
 		{
 			gameObject.transform.position = Vector3.MoveTowards(transform.position, transform.position + way, speed);  
