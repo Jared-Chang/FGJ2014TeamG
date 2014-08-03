@@ -9,7 +9,7 @@ public class Skill : MonoBehaviour
 	public float[] thunderCDTime = new float[3];
 	public float[] fireCDTime = new float[3];
 	public float[] slayCDTime = new float[3];
-
+	
 	
 	public float[] thunderAttack = new float[3];
 	public float[] fireAttack = new float[3];
@@ -24,6 +24,8 @@ public class Skill : MonoBehaviour
 	public int thunderLevel;
 	public int fireLevel;
 	public int slayLevel;
+
+	public Transform mainTowerTransform;
 
 	[HideInInspector]
 	public bool canUseThunder;
@@ -42,12 +44,18 @@ public class Skill : MonoBehaviour
 	private float fireCDTimer;
 	private float slayCDTimer;
 
+	private Transform fireCDAni, slayCDAni, thunderCDAni;
+
 	// Use this for initialization
 	void Start () 
 	{
 		canUseThunder = true;
 		canUseFire = true;
 		canUseSlay = true;
+		fireCDAni = transform.FindChild("FireCD");
+		slayCDAni = transform.FindChild("SlayCD");
+		thunderCDAni = transform.FindChild("ThunderCD");
+
 	}
 
 	//To use the skill Thunder
@@ -57,7 +65,8 @@ public class Skill : MonoBehaviour
 		if( canUseThunder )
 		{
 			StartCoroutine("ThunderCD");
-			GameObject thunder = (GameObject)Instantiate( thunderPrefeb, transform.position, Quaternion.identity );
+			thunderCDAni.GetComponent<ThunderCDAni>().SetCD(thunderCDTime[thunderLevel]);
+			GameObject thunder = (GameObject)Instantiate( thunderPrefeb, mainTowerTransform.position, Quaternion.identity );
 			thunder.GetComponent<SkillShoot>().SetSkill( thunderAttack[thunderLevel],  targetDirect, thunderExplosionScope );
 		}
 	}
@@ -68,7 +77,8 @@ public class Skill : MonoBehaviour
 		if( canUseFire )
 		{
 			StartCoroutine("FireCD");
-			GameObject fire = (GameObject)Instantiate( firePrefeb, transform.position, Quaternion.identity );
+			fireCDAni.GetComponent<FireCDAni>().SetCD(fireCDTime[fireLevel]);
+			GameObject fire = (GameObject)Instantiate( firePrefeb, mainTowerTransform.position, Quaternion.identity );
 			fire.GetComponent<SkillShoot>().SetSkill( fireAttack[fireLevel],  targetDirect, fireExplosionScope );
 		}
 	}
@@ -79,7 +89,8 @@ public class Skill : MonoBehaviour
 		if( canUseSlay )
 		{
 			StartCoroutine("SlayCD");
-			GameObject slay = (GameObject)Instantiate( slayPrefeb, transform.position, Quaternion.identity );
+			slayCDAni.GetComponent<SlayCDAni>().SetCD(slayCDTime[slayLevel]);
+			GameObject slay = (GameObject)Instantiate( slayPrefeb, mainTowerTransform.position, Quaternion.identity );
 			slay.GetComponent<SkillShoot>().SetSkill( slayAttack[slayLevel],  targetDirect, slayExplosionScope );
 		}
 	}
