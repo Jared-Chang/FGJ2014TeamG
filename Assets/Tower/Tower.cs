@@ -142,6 +142,7 @@ public class Tower : MonoBehaviour {
 			Debug.Log("miniDistance: " + miniDistance);
 			if(miniDistance != 0)
 			{
+				// find tagater
 				Debug.Log("go to " +mCollers[miniDistanceId].name);
 				mBullt.archerPosition = shootPoint[i].transform.position;
 				mBullt.targertPosition = mCollers[miniDistanceId].transform.position;
@@ -149,7 +150,8 @@ public class Tower : MonoBehaviour {
 			}
 			else
 			{
-				mBullt.targertPosition = new Vector3(shootPoint[i].transform.position.x -1000, shootPoint[i].transform.position.y, shootPoint[i].transform.position.z);
+				//not find tagater
+				//mBullt.targertPosition = new Vector3(shootPoint[i].transform.position.x -1000, shootPoint[i].transform.position.y, shootPoint[i].transform.position.z);
 			}
 			newBullt.transform.LookAt(mBullt.targertPosition);
 			shootPart.transform.LookAt(mBullt.targertPosition);
